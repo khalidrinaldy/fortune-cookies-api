@@ -1,1 +1,1 @@
-web: fortune-cookies-api
+web: fortune-cookies

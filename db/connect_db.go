@@ -10,11 +10,11 @@ import (
 
 func OpenDatabase() *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_DATABASE"),
-		os.Getenv("DB_PORT"),
+		os.Getenv("DATABASE_HOST"),
+		os.Getenv("DATABASE_USER"),
+		os.Getenv("DATABASE_PASSWORD"),
+		os.Getenv("DATABASE_NAME"),
+		os.Getenv("DATABASE_PORT"),
 		os.Getenv("SSL_MODE"),
 		os.Getenv("TIMEZONE"))
 	db, err := gorm.Open(postgres.Open(string(dsn)), &gorm.Config{})

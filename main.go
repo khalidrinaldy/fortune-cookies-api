@@ -1,7 +1,8 @@
 package main
 
 import (
-	//"fortune-cookies/config"
+	"fmt"
+	"fortune-cookies/config"
 	"fortune-cookies/routes"
 	"os"
 
@@ -17,10 +18,17 @@ func main() {
 	routes.InitRoute(ech)
 
 	//Config
-	//cfg, _ := config.NewConfig(".env")
+	cfg, _ := config.NewConfig(".env")
 
 	//use CORS
 	ech.Use(middleware.CORS())
 	
-	ech.Logger.Fatal(ech.Start(":" + os.Getenv("PORT")))
+	//Set PORT
+	port := os.Getenv("PORT")
+	if port == "" {
+		fmt.Println("port no ERROR")
+		port = cfg.Port
+	}
+
+	ech.Logger.Fatal(ech.Start(":" + port))
 }

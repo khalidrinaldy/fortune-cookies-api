@@ -1,0 +1,94 @@
+package repository
+
+import (
+	"fortune-cookies/entity"
+	"fortune-cookies/helper"
+	"net/http"
+	"strconv"
+
+	"github.com/labstack/echo"
+	"gorm.io/gorm"
+)
+
+func GetAllProducts(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var products []entity.Product
+		result := db.Find(&products)
+		if result.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Get All Products Failed", &products))
+		}
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Get All Products Success", &products))
+	}
+}
+
+func GetProductsByCategory(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var products []entity.Product
+		result := db.Where("product_category = ?", c.Param("category")).Find(&products)
+		if result.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Get Product By Category Failed", &products))
+		}
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Get Product By Category Success", &products))
+	}
+}
+
+func GetOneProduct(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var product entity.Product
+		result := db.Where("id = ?", c.Param("id")).Find(&product)
+		if result.Error != nil {
+			return result.Error
+		}
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Get One Product By Id Success", &product))
+	}
+}
+
+func AddProduct(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var product entity.Product
+		product.Product_Name = c.FormValue("product_name")
+		product.Product_Category = c.FormValue("product_category")
+		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
+		product.Product_Image = c.FormValue("product_image")
+		product.Product_Description = c.FormValue("product_description")
+
+		result := db.Create(&product)
+		if result.Error != nil {
+			return result.Error
+		}
+		return c.JSON(http.StatusOK, &product)
+	}
+}
+
+func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var product entity.Product
+		product.Product_Name = c.FormValue("product_name")
+		product.Product_Category = c.FormValue("product_category")
+		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
+		product.Product_Image = c.FormValue("product_image")
+		product.Product_Description = c.FormValue("product_description")
+
+		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(entity.Product{
+			Product_Name:     product.Product_Name,
+			Product_Category: product.Product_Category,
+			Product_Price:    product.Product_Price,
+			Product_Image:    product.Product_Image,
+		})
+		if result.Error != nil {
+			return result.Error
+		}
+		return c.JSON(http.StatusOK, &product)
+	}
+}
+
+func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var product entity.Product
+		result := db.Delete(&product, c.Param("id"))
+		if result.Error != nil {
+			return result.Error
+		}
+		return c.JSON(http.StatusOK, product)
+	}
+}

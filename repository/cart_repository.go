@@ -59,7 +59,7 @@ func DeleteItemCart(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var deleteItem entity.Cart_Products
 		deleteItem.CartID,_ = strconv.Atoi(c.Param("id"))
-		deleteItem.ProductID,_ = strconv.Atoi(c.FormValue("product_id"))
+		deleteItem.ProductID,_ = strconv.Atoi(c.Param("product_id"))
 		query := fmt.Sprintf("DELETE FROM cart_products WHERE cart_id = %d AND product_id = %d", deleteItem.CartID, deleteItem.ProductID)
 		result := db.Exec(query)
 		if result.Error != nil {

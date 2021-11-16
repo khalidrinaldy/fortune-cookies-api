@@ -57,7 +57,7 @@ func UpdateItemCart(db *gorm.DB) echo.HandlerFunc {
 func DeleteItemCart(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var deleteItem entity.Cart_Products
-		result := db.Raw("DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?", c.Param("id"), c.FormValue("product_id")).Scan(&deleteItem)
+		result := db.Exec("DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?", c.Param("id"), c.FormValue("product_id"))
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Delete Item Cart Failed", result.Error))
 		}

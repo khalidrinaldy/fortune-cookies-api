@@ -7,9 +7,10 @@ type Cart struct {
 }
 
 type CartProductsList struct {
-	ID uint64
-	Product_Name string
-	Product_Price	int
+	ID            uint64
+	Product_Id    uint64
+	Product_Name  string
+	Product_Price int
 	Product_Image string
-	Amount int
+	Amount        int
 }

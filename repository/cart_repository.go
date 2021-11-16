@@ -13,7 +13,7 @@ import (
 func GetCartList(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var cart []entity.CartProductsList
-		result := db.Raw("select cart_products.id, products.product_name, products.product_price, products.product_image, cart_products.amount from cart_products join products on products.id = cart_products.product_id join carts on carts.id = cart_products.cart_id where carts.user_id = ?;", c.Param("id")).
+		result := db.Raw("select cart_products.id, cart_products.product_id, products.product_name, products.product_price, products.product_image, cart_products.amount from cart_products join products on products.id = cart_products.product_id join carts on carts.id = cart_products.cart_id where carts.user_id = ?;", c.Param("id")).
 				Scan(&cart)
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Get Cart List Failed", ""))
@@ -57,7 +57,7 @@ func UpdateItemCart(db *gorm.DB) echo.HandlerFunc {
 func DeleteItemCart(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var deleteItem entity.Cart_Products
-		result := db.Raw("DELETE FROM users WHERE cart_id = ? AND product_id = ?", c.Param("id"), c.FormValue("product_id"))
+		result := db.Raw("DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?", c.Param("id"), c.FormValue("product_id"))
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Delete Item Cart Failed", &deleteItem))
 		}

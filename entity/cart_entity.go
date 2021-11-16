@@ -1,14 +1,14 @@
 package entity
 
 type Cart struct {
-	ID       uint64 `gorm:"primarykey"`
-	UserID   uint64
+	ID       int `gorm:"primarykey"`
+	UserID   int
 	Products []Product `gorm:"many2many:cart_products;"`
 }
 
 type CartProductsList struct {
-	ID            uint64
-	Product_Id    uint64
+	ID            int
+	Product_Id    int
 	Product_Name  string
 	Product_Price int
 	Product_Image string

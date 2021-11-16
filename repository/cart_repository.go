@@ -25,8 +25,8 @@ func GetCartList(db *gorm.DB) echo.HandlerFunc {
 func AddToCart(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var addCart entity.Cart_Products
-		addCart.CartID, _ = strconv.ParseUint(c.FormValue("cart_id"), 10, 64)
-		addCart.ProductID, _ = strconv.ParseUint(c.FormValue("product_id"), 10, 64)
+		addCart.CartID, _ = strconv.Atoi(c.FormValue("cart_id"))
+		addCart.ProductID, _ = strconv.Atoi(c.FormValue("product_id"))
 		addCart.Amount, _ = strconv.Atoi(c.FormValue("amount"))
 		result := db.Create(&addCart)
 		if result.Error != nil {
@@ -39,8 +39,8 @@ func AddToCart(db *gorm.DB) echo.HandlerFunc {
 func UpdateItemCart(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var updateItem entity.Cart_Products
-		updateItem.CartID, _ = strconv.ParseUint(c.FormValue("cart_id"), 10, 64)
-		updateItem.ProductID, _ = strconv.ParseUint(c.FormValue("product_id"), 10, 64)
+		updateItem.CartID, _ = strconv.Atoi(c.FormValue("cart_id"))
+		updateItem.ProductID, _ = strconv.Atoi(c.FormValue("product_id"))
 		updateItem.Amount, _ = strconv.Atoi(c.FormValue("amount"))
 		result := db.Model(&updateItem).Where("id = ?", c.Param("id")).Updates(entity.Cart_Products{
 			CartID: updateItem.CartID,

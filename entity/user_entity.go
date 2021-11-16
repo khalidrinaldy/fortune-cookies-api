@@ -1,7 +1,7 @@
 package entity
 
 type User struct {
-	ID       uint64 `gorm:"primarykey"`
+	ID       int `gorm:"primarykey"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Token    string `json:"token,omitempty"`

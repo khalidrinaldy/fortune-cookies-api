@@ -43,7 +43,7 @@ func UpdateItemCart(db *gorm.DB) echo.HandlerFunc {
 		updateItem.CartID, _ = strconv.Atoi(c.FormValue("cart_id"))
 		updateItem.ProductID, _ = strconv.Atoi(c.FormValue("product_id"))
 		updateItem.Amount, _ = strconv.Atoi(c.FormValue("amount"))
-		result := db.Model(&updateItem).Where("id = ?", c.Param("id")).Updates(entity.Cart_Products{
+		result := db.Model(&updateItem).Where("cart_id = ?", c.Param("id")).Updates(entity.Cart_Products{
 			CartID: updateItem.CartID,
 			ProductID: updateItem.ProductID,
 			Amount: updateItem.Amount,

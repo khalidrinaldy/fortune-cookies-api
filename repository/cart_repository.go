@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"fortune-cookies/entity"
 	"fortune-cookies/helper"
 	"net/http"
@@ -59,7 +60,8 @@ func DeleteItemCart(db *gorm.DB) echo.HandlerFunc {
 		var deleteItem entity.Cart_Products
 		deleteItem.CartID,_ = strconv.Atoi(c.Param("id"))
 		deleteItem.ProductID,_ = strconv.Atoi(c.FormValue("product_id"))
-		result := db.Exec("DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?", deleteItem.CartID, deleteItem.ProductID)
+		query := fmt.Sprintf("DELETE FROM cart_products WHERE cart_id = %d AND product_id = %d", deleteItem.CartID, deleteItem.ProductID)
+		result := db.Exec(query)
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Delete Item Cart Failed", result.Error))
 		}

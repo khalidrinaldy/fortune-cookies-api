@@ -19,6 +19,7 @@ func InitRoute(e *echo.Echo) {
 	e.POST("/register", repository.Registration(database))
 	e.POST("/login", repository.Login(database))
 	e.GET("/user/:id", repository.GetUser(database))
+	e.GET("/userbytoken", repository.GetUserByToken(database), middlewares.IsLoggedIn())
 
 	//Cart API
 	e.GET("/cart/:id", repository.GetCartList(database), middlewares.IsLoggedIn())

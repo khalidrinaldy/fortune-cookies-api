@@ -15,9 +15,9 @@ type Result struct {
 	Data    interface{} `json:"data"`
 }
 
-func JwtGenerator(username, key string) string {
+func JwtGenerator(email, key string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username,
+		"email": email,
 	})
 
 	tokenString, err := token.SignedString([]byte(key))

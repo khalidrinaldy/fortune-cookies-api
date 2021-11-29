@@ -22,10 +22,10 @@ func InitRoute(e *echo.Echo) {
 	e.GET("/userbytoken", repository.GetUserByToken(database), middlewares.IsLoggedIn())
 
 	//Cart API
-	e.GET("/cart/:id", repository.GetCartList(database), middlewares.IsLoggedIn())
+	e.GET("/cart", repository.GetCartList(database), middlewares.IsLoggedIn())
 	e.POST("/cart", repository.AddToCart(database), middlewares.IsLoggedIn())
-	e.PUT("/cart/:id", repository.UpdateItemCart(database), middlewares.IsLoggedIn())
-	e.DELETE("/cart/:id/:product_id", repository.DeleteItemCart(database), middlewares.IsLoggedIn())
+	e.PUT("/cart", repository.UpdateItemCart(database), middlewares.IsLoggedIn())
+	e.DELETE("/cart/:product_id", repository.DeleteItemCart(database), middlewares.IsLoggedIn())
 
 	//Product API
 	e.GET("/product", repository.GetAllProducts(database))
@@ -33,4 +33,9 @@ func InitRoute(e *echo.Echo) {
 	e.POST("/product", repository.AddProduct(database))
 	e.PUT("/product/:id", repository.UpdateProduct(database))
 	e.DELETE("/product/:id", repository.DeleteProduct(database))
+
+	//History API
+	e.GET("/history", repository.GetAllHistory(database), middlewares.IsLoggedIn())
+	e.GET("/history/detail/:history_id", repository.GetDetailHistoryProducts(database), middlewares.IsLoggedIn())
+	e.POST("/purchase", repository.Purchase(database), middlewares.IsLoggedIn())
 }

@@ -1,4 +1,4 @@
-// package repository
+package repository
 
 // import (
 // 	"fortune-cookies/entity"
@@ -7,8 +7,8 @@
 // 	"gorm.io/gorm"
 // )
 
-// func GetAllHistory(db *gorm.DB) echo.HandlerFunc{
-// 	return func(c echo.Context) error {
-// 		var history []entity.History_products
-// 	}
-// }
+// // func GetAllHistory(db *gorm.DB) echo.HandlerFunc{
+// // 	return func(c echo.Context) error {
+// // 		var history []entity.History_products
+// // 	}
+// // }

@@ -30,7 +30,7 @@ func GetAllHistory(db *gorm.DB) echo.HandlerFunc{
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Token Not Found", ""))
 		}
 
-		resultHistory := db.Raw("select id, created_at , address, total_price from histories where user_id = ?;", user.Id).Scan(&history)
+		resultHistory := db.Raw("select id, created_at , address, total_price from histories where user_id = ? order by created_at desc;", user.Id).Scan(&history)
 		if resultHistory.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error))
 		}

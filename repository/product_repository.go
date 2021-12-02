@@ -5,6 +5,7 @@ import (
 	"fortune-cookies/helper"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo"
 	"gorm.io/gorm"
@@ -46,6 +47,22 @@ func GetOneProduct(db *gorm.DB) echo.HandlerFunc {
 func AddProduct(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var product entity.Product
+		var admin entity.Admin
+
+		//Get token
+		headerToken := c.Request().Header.Get("Authorization")
+		headerToken = strings.ReplaceAll(headerToken, "Bearer", "")
+		headerToken = strings.ReplaceAll(headerToken, " ", "")
+
+		//Check Is Admin
+		resultAdmin := db.First(&admin, "token = ?", headerToken)
+		if resultAdmin.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", resultAdmin.Error.Error()))
+		}
+		if resultAdmin.RowsAffected == 0 {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
+		}
+
 		product.Product_Name = c.FormValue("product_name")
 		product.Product_Category = c.FormValue("product_category")
 		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
@@ -63,6 +80,22 @@ func AddProduct(db *gorm.DB) echo.HandlerFunc {
 func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var product entity.Product
+		var admin entity.Admin
+
+		//Get token
+		headerToken := c.Request().Header.Get("Authorization")
+		headerToken = strings.ReplaceAll(headerToken, "Bearer", "")
+		headerToken = strings.ReplaceAll(headerToken, " ", "")
+
+		//Check Is Admin
+		resultAdmin := db.First(&admin, "token = ?", headerToken)
+		if resultAdmin.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", resultAdmin.Error.Error()))
+		}
+		if resultAdmin.RowsAffected == 0 {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
+		}
+
 		product.Product_Name = c.FormValue("product_name")
 		product.Product_Category = c.FormValue("product_category")
 		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
@@ -85,6 +118,22 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var product entity.Product
+		var admin entity.Admin
+
+		//Get token
+		headerToken := c.Request().Header.Get("Authorization")
+		headerToken = strings.ReplaceAll(headerToken, "Bearer", "")
+		headerToken = strings.ReplaceAll(headerToken, " ", "")
+
+		//Check Is Admin
+		resultAdmin := db.First(&admin, "token = ?", headerToken)
+		if resultAdmin.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", resultAdmin.Error.Error()))
+		}
+		if resultAdmin.RowsAffected == 0 {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
+		}
+		
 		result := db.Delete(&product, c.Param("id"))
 		if result.Error != nil {
 			return result.Error

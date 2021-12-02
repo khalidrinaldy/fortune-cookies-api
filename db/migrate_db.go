@@ -13,4 +13,5 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(&entity.Cart_Products{})
 	db.AutoMigrate(&entity.History{})
 	db.AutoMigrate(&entity.History_products{})
+	db.AutoMigrate(&entity.Admin{})
 }

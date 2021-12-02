@@ -38,4 +38,9 @@ func InitRoute(e *echo.Echo) {
 	e.GET("/history", repository.GetAllHistory(database), middlewares.IsLoggedIn())
 	e.GET("/history/detail/:history_id", repository.GetDetailHistoryProducts(database), middlewares.IsLoggedIn())
 	e.POST("/purchase", repository.Purchase(database), middlewares.IsLoggedIn())
+
+	//Admin API
+	e.GET("/adminbytoken", repository.GetAdminByToken(database), middlewares.IsLoggedIn())
+	e.POST("/admin/register", repository.RegisterAdmin(database))
+	e.POST("/admin/login", repository.LoginAdmin(database))
 }

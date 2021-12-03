@@ -30,9 +30,9 @@ func InitRoute(e *echo.Echo) {
 	//Product API
 	e.GET("/product", repository.GetAllProducts(database))
 	e.GET("/product/:category", repository.GetProductsByCategory(database))
-	e.POST("/product", repository.AddProduct(database))
-	e.PUT("/product/:id", repository.UpdateProduct(database))
-	e.DELETE("/product/:id", repository.DeleteProduct(database))
+	e.POST("/product", repository.AddProduct(database),middlewares.IsLoggedIn())
+	e.PUT("/product/:id", repository.UpdateProduct(database),middlewares.IsLoggedIn())
+	e.DELETE("/product/:id", repository.DeleteProduct(database), middlewares.IsLoggedIn())
 
 	//History API
 	e.GET("/history", repository.GetAllHistory(database), middlewares.IsLoggedIn())

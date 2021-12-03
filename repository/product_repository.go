@@ -113,9 +113,8 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 		// })
 		result := db.Exec(fmt.Sprintf(`
 			update products
-			set product_name = %s, product_category = %s, product_price = %d, product_image = %s, product_description = %s
-			where id = %d
-		`, 
+			set product_name = '%s', product_category = '%s', product_price = %d, product_image = '%s', product_description = '%s'
+			where id = %d;`, 
 			product.Product_Name,
 			product.Product_Category,
 			product.Product_Price,

@@ -102,12 +102,12 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 		product.Product_Image = c.FormValue("product_image")
 		product.Product_Description = c.FormValue("product_description")
 
-		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(entity.Product{
-			Product_Name:     product.Product_Name,
-			Product_Category: product.Product_Category,
-			Product_Price:    product.Product_Price,
-			Product_Image:    product.Product_Image,
-			Product_Description: product.Product_Description,
+		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(map[string]interface{}{
+			"product_name":     product.Product_Name,
+			"product_category": product.Product_Category,
+			"product_price":    product.Product_Price,
+			"product_image":    product.Product_Image,
+			"product_description": product.Product_Description,
 		})
 		if result.Error != nil {
 			return result.Error

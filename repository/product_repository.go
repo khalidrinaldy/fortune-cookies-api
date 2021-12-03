@@ -105,7 +105,7 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(map[string]interface{}{
 			"product_name":     product.Product_Name,
 			"product_category": product.Product_Category,
-			"product_price":    product.Product_Price,
+			//"product_price":    product.Product_Price,
 			"product_image":    product.Product_Image,
 			"product_description": product.Product_Description,
 		})

@@ -71,7 +71,7 @@ func AddProduct(db *gorm.DB) echo.HandlerFunc {
 
 		result := db.Create(&product)
 		if result.Error != nil {
-			return result.Error
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
 		}
 		return c.JSON(http.StatusOK, &product)
 	}
@@ -149,7 +149,7 @@ func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
 
 		result := db.Delete(&product, c.Param("id"))
 		if result.Error != nil {
-			return result.Error
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
 		}
 		return c.JSON(http.StatusOK, product)
 	}

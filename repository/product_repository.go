@@ -107,6 +107,7 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 			Product_Category: product.Product_Category,
 			Product_Price:    product.Product_Price,
 			Product_Image:    product.Product_Image,
+			Product_Description: product.Product_Description,
 		})
 		if result.Error != nil {
 			return result.Error

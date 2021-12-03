@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"fortune-cookies/entity"
 	"fortune-cookies/helper"
 	"net/http"
@@ -96,19 +97,32 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
 		}
 
+		product.ID,_ = strconv.Atoi(c.Param("id"))
 		product.Product_Name = c.FormValue("product_name")
 		product.Product_Category = c.FormValue("product_category")
 		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
 		product.Product_Image = c.FormValue("product_image")
 		product.Product_Description = c.FormValue("product_description")
 
-		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(map[string]interface{}{
-			"product_name":     product.Product_Name,
-			"product_category": product.Product_Category,
-			//"product_price":    product.Product_Price,
-			"product_image":    product.Product_Image,
-			"product_description": product.Product_Description,
-		})
+		// result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(map[string]interface{}{
+		// 	"product_name":     product.Product_Name,
+		// 	"product_category": product.Product_Category,
+		// 	//"product_price":    product.Product_Price,
+		// 	"product_image":    product.Product_Image,
+		// 	"product_description": product.Product_Description,
+		// })
+		result := db.Exec(fmt.Sprintf(`
+			update products
+			set product_name = %s, product_category = %s, product_price = %d, product_image = %s, product_description = %s
+			where id = %d
+		`, 
+			product.Product_Name,
+			product.Product_Category,
+			product.Product_Price,
+			product.Product_Image,
+			product.Product_Description,
+			product.ID,
+		))
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
 		}
@@ -134,7 +148,7 @@ func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
 		if resultAdmin.RowsAffected == 0 {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
 		}
-		
+
 		result := db.Delete(&product, c.Param("id"))
 		if result.Error != nil {
 			return result.Error

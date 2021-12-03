@@ -122,7 +122,7 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 		// 	product.ID,
 		// ))
 		if result.Error != nil {
-			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, c.Param("id"), result.Error.Error()))
 		}
 		return c.JSON(http.StatusOK, &product)
 	}

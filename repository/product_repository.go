@@ -29,7 +29,7 @@ func GetProductsByCategory(db *gorm.DB) echo.HandlerFunc {
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Get Product By Category Failed", &products))
 		}
-		return c.JSON(http.StatusOK, helper.ResultResponse(false, c.Param("category"), &products))
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Get Product By Category Success", &products))
 	}
 }
 

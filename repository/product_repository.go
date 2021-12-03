@@ -96,14 +96,14 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Admin Token Not Found", ""))
 		}
 
-		product.ID, _ = strconv.Atoi(c.Param("product_id"))
+		product.ID, _ = strconv.Atoi(c.Param("id"))
 		product.Product_Name = c.FormValue("product_name")
 		product.Product_Category = c.FormValue("product_category")
 		product.Product_Price, _ = strconv.Atoi(c.FormValue("product_price"))
 		product.Product_Image = c.FormValue("product_image")
 		product.Product_Description = c.FormValue("product_description")
 
-		result := db.Model(&product).Where("id = ?", product.ID).Updates(map[string]interface{}{
+		result := db.Model(&product).Where("id = ?", c.Param("id")).Updates(map[string]interface{}{
 			"product_name":        product.Product_Name,
 			"product_category":    product.Product_Category,
 			"product_price":       product.Product_Price,
@@ -147,7 +147,7 @@ func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
 
 		result := db.Delete(&product, c.Param("id"))
 		if result.Error != nil {
-			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, c.Param("id"), result.Error.Error()))
 		}
 		return c.JSON(http.StatusOK, product)
 	}

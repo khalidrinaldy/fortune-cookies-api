@@ -26,7 +26,7 @@ func GetAllProducts(db *gorm.DB) echo.HandlerFunc {
 func GetProductsByCategory(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var products []entity.Product
-		result := db.Where("product_category = ?", c.Param("category")).Find(&products)
+		result := db.Order("id asc").Where("product_category = ?", c.Param("category")).Find(&products)
 		if result.Error != nil {
 			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Get Product By Category Failed", &products))
 		}

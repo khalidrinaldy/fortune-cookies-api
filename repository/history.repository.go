@@ -109,3 +109,16 @@ func Purchase(db *gorm.DB) echo.HandlerFunc {
 		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Purchase Success", &history))
 	}
 }
+
+func CountHistory(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var count int64
+
+		//QUERY
+		result := db.Table("histories").Count(&count)
+		if result.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
+		}
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Count Histories Success", &count))
+	}
+}

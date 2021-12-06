@@ -20,6 +20,7 @@ func InitRoute(e *echo.Echo) {
 	e.POST("/login", repository.Login(database))
 	e.GET("/user/:id", repository.GetUser(database))
 	e.GET("/userbytoken", repository.GetUserByToken(database), middlewares.IsLoggedIn())
+	e.GET("/user/count", repository.CountUsers(database))
 
 	//Cart API
 	e.GET("/cart", repository.GetCartList(database), middlewares.IsLoggedIn())
@@ -30,6 +31,7 @@ func InitRoute(e *echo.Echo) {
 	//Product API
 	e.GET("/product", repository.GetAllProducts(database))
 	e.GET("/product/:category", repository.GetProductsByCategory(database))
+	e.GET("/product/count", repository.CountProducts(database))
 	e.POST("/product", repository.AddProduct(database),middlewares.IsLoggedIn())
 	e.PUT("/product/edit/:id", repository.UpdateProduct(database),middlewares.IsLoggedIn())
 	e.DELETE("/product/delete/:id", repository.DeleteProduct(database), middlewares.IsLoggedIn())
@@ -37,6 +39,7 @@ func InitRoute(e *echo.Echo) {
 	//History API
 	e.GET("/history", repository.GetAllHistory(database), middlewares.IsLoggedIn())
 	e.GET("/history/detail/:history_id", repository.GetDetailHistoryProducts(database), middlewares.IsLoggedIn())
+	e.GET("/history/count", repository.CountHistory(database))
 	e.POST("/purchase", repository.Purchase(database), middlewares.IsLoggedIn())
 
 	//Admin API

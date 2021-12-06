@@ -120,9 +120,9 @@ func UpdateProduct(db *gorm.DB) echo.HandlerFunc {
 		// )
 		// result := db.Exec(query)
 		if result.Error != nil {
-			return c.JSON(http.StatusOK, helper.ResultResponse(true, result.Error.Error(), product.ID))
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
 		}
-		return c.JSON(http.StatusOK, &product)
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Edit Product Success", &product))
 	}
 }
 
@@ -147,8 +147,21 @@ func DeleteProduct(db *gorm.DB) echo.HandlerFunc {
 
 		result := db.Delete(&product, c.Param("id"))
 		if result.Error != nil {
-			return c.JSON(http.StatusOK, helper.ResultResponse(true, c.Param("id"), result.Error.Error()))
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
 		}
-		return c.JSON(http.StatusOK, product)
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Delete Products Success", ""))
+	}
+}
+
+func CountProducts(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var count int64
+
+		//QUERY
+		result := db.Table("products").Count(&count)
+		if result.Error != nil {
+			return c.JSON(http.StatusOK, helper.ResultResponse(true, "Error Occured While Querying SQL", result.Error.Error()))
+		}
+		return c.JSON(http.StatusOK, helper.ResultResponse(false, "Count Products Success", &count))
 	}
 }
